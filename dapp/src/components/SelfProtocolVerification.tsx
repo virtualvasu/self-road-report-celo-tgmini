@@ -9,7 +9,7 @@ import {
   getUniversalLink,
 } from "@selfxyz/qrcode";
 import { ethers } from "ethers";
-import { getBrowserProvider } from "../lib/wallet";
+import { getReadOnlyProvider } from "../lib/wallet";
 import { ArrowLeft, Shield, CheckCircle, AlertTriangle, Copy, ExternalLink, Loader2 } from 'lucide-react';
 
 // Type definitions for Self Protocol
@@ -154,7 +154,8 @@ export default function SelfProtocolVerification({
   // Function to switch to Celo Sepolia network
   const switchToCeloSepolia = async () => {
     try {
-      const provider = await getBrowserProvider();
+      // Read-only provider cannot switch networks; user should switch in wallet
+      const provider = getReadOnlyProvider();
       try {
         await provider.send('wallet_switchEthereumChain', [{ chainId: `0x${CELO_SEPOLIA_CHAIN_ID.toString(16)}` }]);
       } catch (switchError: any) {
@@ -192,7 +193,7 @@ export default function SelfProtocolVerification({
       }
 
       try {
-        const browserProvider = await getBrowserProvider();
+        const browserProvider = getReadOnlyProvider();
         
         // Check if we're on the correct network (Celo Sepolia testnet)
         const network = await browserProvider.getNetwork();
@@ -207,8 +208,7 @@ export default function SelfProtocolVerification({
         
         setWrongNetwork(false);
         
-        const signer = await browserProvider.getSigner();
-        const pohContract = new ethers.Contract(PROOF_OF_HUMAN_ADDRESS, PROOF_OF_HUMAN_ABI, signer);
+        const pohContract = new ethers.Contract(PROOF_OF_HUMAN_ADDRESS, PROOF_OF_HUMAN_ABI, browserProvider);
         setProofOfHumanContract(pohContract);
       } catch (error) {
         console.error("Failed to initialize ProofOfHuman contract:", error);
