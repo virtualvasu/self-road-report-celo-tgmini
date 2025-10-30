@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { connectWalletAndContract } from '../../lib/contract';
 import StorachaConnection from '../StorachaConnection';
 import type { StorachaCredentials } from '../StorachaConnection';
-import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI } from '../../lib/contract';
+// import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI } from '../../lib/contract';
 
 declare global {
   interface Window {
