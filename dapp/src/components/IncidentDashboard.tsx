@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, ArrowLeft, FileText, User, Clock, Hash, ExternalLink, AlertCircle, Loader, CheckCircle, XCircle, RefreshCw, Eye } from 'lucide-react';
 import { ethers } from 'ethers';
-import { getBrowserProvider } from '../lib/wallet';
+import { getReadOnlyProvider } from '../lib/wallet';
 import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, type IncidentData } from '../lib/contract';
 
 declare global {
@@ -33,8 +33,8 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
       setIsLoading(true);
       setError('');
       
-      const browserProvider = await getBrowserProvider();
-      const contract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, browserProvider);
+      const readProvider = getReadOnlyProvider();
+      const contract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, readProvider);
       
       // Get the last incident ID
       const lastIncidentId = await contract.getLastIncidentId();
@@ -84,8 +84,8 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
     setSearchError('');
 
     try {
-      const browserProvider = await getBrowserProvider();
-      const contract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, browserProvider);
+      const readProvider = getReadOnlyProvider();
+      const contract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, readProvider);
       
       const data = await contract.getIncident(Number(searchId));
       

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Search, ArrowLeft, FileText, User, Clock, Hash, ExternalLink, AlertCircle, Loader, CheckCircle, XCircle } from 'lucide-react';
 import { ethers } from 'ethers';
-import { getBrowserProvider } from '../lib/wallet';
+import { getReadOnlyProvider } from '../lib/wallet';
 import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, type IncidentData } from '../lib/contract';
 
 declare global {
@@ -31,8 +31,8 @@ export default function IncidentSearchPage({ onBack }: IncidentSearchPageProps) 
     setIncidentData(null);
 
     try {
-      const browserProvider = await getBrowserProvider();
-      const contract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, browserProvider);
+      const readProvider = getReadOnlyProvider();
+      const contract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, readProvider);
       
       const data = await contract.getIncident(Number(incidentId));
       

@@ -37,6 +37,11 @@ export async function getBrowserProvider(): Promise<ethers.BrowserProvider> {
     console.warn('[wallet] VITE_CELO_SEPOLIA_RPC_URL not set. Falling back to default Celo Sepolia RPC');
   }
 
+  // Use cached instance to avoid repeated sessions and relay issues
+  if ((window as any).__wcBrowserProvider) {
+    return (window as any).__wcBrowserProvider as ethers.BrowserProvider;
+  }
+
   const wcProvider = await EthereumProvider.init({
     projectId,
     showQrModal: true,
@@ -46,7 +51,18 @@ export async function getBrowserProvider(): Promise<ethers.BrowserProvider> {
   });
 
   await wcProvider.enable();
-  return new ethers.BrowserProvider(wcProvider as unknown as any);
+  const browserProvider = new ethers.BrowserProvider(wcProvider as unknown as any);
+
+  // Cache and handle disconnects
+  (window as any).__wcBrowserProvider = browserProvider;
+  try {
+    (wcProvider as any).on?.('disconnect', () => {
+      console.warn('[wallet] WalletConnect disconnected. Clearing cached provider');
+      (window as any).__wcBrowserProvider = undefined;
+    });
+  } catch {}
+
+  return browserProvider;
 }
 
 export async function connectWalletAndGetContract(address: string, abi: any): Promise<{
@@ -59,6 +75,11 @@ export async function connectWalletAndGetContract(address: string, abi: any): Pr
   const signer = await provider.getSigner();
   const contract = new ethers.Contract(address, abi, signer);
   return { walletAddress: accounts[0], contract, provider };
+}
+
+export function getReadOnlyProvider(): ethers.JsonRpcProvider {
+  const rpcUrl = getEnv('VITE_CELO_SEPOLIA_RPC_URL') || DEFAULT_CELO_SEPOLIA_RPC;
+  return new ethers.JsonRpcProvider(rpcUrl, CELO_SEPOLIA_CHAIN_ID);
 }
 
 
