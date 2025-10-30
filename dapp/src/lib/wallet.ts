@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import EthereumProvider from '@walletconnect/ethereum-provider';
-import { isTelegram } from './telegram';
+// import { isTelegram } from './telegram';
 
 const CELO_SEPOLIA_CHAIN_ID = 11142220;
 // Temporary manual fallback per user request
