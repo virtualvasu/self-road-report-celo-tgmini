@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Wallet, TrendingUp, Award, ArrowLeft, RefreshCw, DollarSign, Calendar, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI } from '../lib/contract';
-import { getBrowserProvider } from '../lib/wallet';
+import { getBrowserProvider, getReadOnlyProvider } from '../lib/wallet';
 
 declare global {
   interface Window {
@@ -66,69 +66,70 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
   };
 
   const fetchUserRewards = async () => {
-    if (!contract || !walletAddress) return;
+    if (!walletAddress) return;
 
     setIsLoading(true);
     setError('');
     
     try {
-      // Get total number of incidents
-      const lastIncidentId = await contract.getLastIncidentId();
-      const totalIncidents = Number(lastIncidentId);
-      
+      const readProvider = getReadOnlyProvider();
+      const readContract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, readProvider);
+
+      // Fetch once
+      const [lastIncidentIdBN, rewardAmountBN] = await Promise.all([
+        readContract.getLastIncidentId(),
+        readContract.rewardAmount()
+      ]);
+      const totalIncidents = Number(lastIncidentIdBN);
+      const rewardInCelo = ethers.formatEther(rewardAmountBN);
+      setCurrentRewardAmount(rewardInCelo);
+
+      const ids: number[] = [];
+      for (let i = 1; i <= totalIncidents; i++) ids.push(i);
+
+      const concurrency = 20;
       const userIncidentsList: UserIncident[] = [];
-      const rewardedIncidentsList: RewardedIncident[] = [];
-      let totalRewardsSum = 0;
       let verified = 0;
       let pending = 0;
 
-      // Check all incidents to find ones reported by this user
-      for (let i = 1; i <= totalIncidents; i++) {
-        try {
-          const incident = await contract.getIncident(i);
-          const [id, description, reportedBy, timestamp, isVerified] = incident;
-          
-          // Check if this incident was reported by the current user
-          if (reportedBy.toLowerCase() === walletAddress.toLowerCase()) {
-            const incidentData = {
-              id: Number(id),
-              description,
-              reportedBy,
-              timestamp: new Date(Number(timestamp) * 1000),
-              verified: isVerified
-            };
-            
-            userIncidentsList.push(incidentData);
-            
-            if (isVerified) {
-              verified++;
-              // Get reward amount from contract
-              const rewardAmount = await contract.rewardAmount();
-              const rewardInCelo = ethers.formatEther(rewardAmount);
-              totalRewardsSum += parseFloat(rewardInCelo);
-              
-              // Store the current reward amount for display
-              setCurrentRewardAmount(rewardInCelo);
-              
-              rewardedIncidentsList.push({
+      for (let start = 1; start <= totalIncidents; start += concurrency) {
+        const end = Math.min(totalIncidents, start + concurrency - 1);
+        const batch = [] as Promise<any>[];
+        for (let i = start; i <= end; i++) {
+          batch.push(readContract.getIncident(i));
+        }
+        const results = await Promise.allSettled(batch);
+        let batchIdx = start;
+        for (const res of results) {
+          if (res.status === 'fulfilled') {
+            const [id, description, reportedBy, timestamp, isVerified] = res.value as any[];
+            if (String(reportedBy).toLowerCase() === walletAddress.toLowerCase()) {
+              const incidentData: UserIncident = {
                 id: Number(id),
                 description,
+                reportedBy,
                 timestamp: new Date(Number(timestamp) * 1000),
-                rewardAmount: rewardInCelo
-              });
-            } else {
-              pending++;
+                verified: Boolean(isVerified)
+              };
+              userIncidentsList.push(incidentData);
+              if (incidentData.verified) verified++; else pending++;
             }
+          } else {
+            console.warn('Incident fetch failed for id', batchIdx, res.reason);
           }
-        } catch (incidentError) {
-          console.error(`Error fetching incident ${i}:`, incidentError);
-          // Continue with next incident
+          batchIdx++;
         }
       }
 
+      // Build rewarded incidents and totals
+      const rewardedIncidentsList: RewardedIncident[] = userIncidentsList
+        .filter(i => i.verified)
+        .map(i => ({ id: i.id, description: i.description, timestamp: i.timestamp, rewardAmount: rewardInCelo }));
+      const totalRewardsSum = (parseFloat(rewardInCelo) * rewardedIncidentsList.length).toFixed(4);
+
       setUserIncidents(userIncidentsList);
       setRewardedIncidents(rewardedIncidentsList);
-      setTotalRewards(totalRewardsSum.toFixed(4));
+      setTotalRewards(totalRewardsSum);
       setVerifiedCount(verified);
       setPendingCount(pending);
 
