@@ -25,11 +25,32 @@ export default function ContractSubmissionStep({ pdfCID, contract, walletAddress
       const tx = await contract.reportIncident(pdfCID);
       const receipt = await tx.wait();
 
+      // Robust confirmation: query contract state after mining instead of relying on logs parsing
+      let incidentId: string | undefined;
+      try {
+        const lastId = await contract.getLastIncidentId();
+        incidentId = lastId?.toString?.() || String(lastId);
+      } catch (e) {
+        // Fallback: try to derive from logs if available
+        try {
+          const firstLog: any = (receipt as any)?.logs?.[0];
+          const arg0 = firstLog?.args?.[0];
+          incidentId = arg0?.toString?.() || String(arg0);
+        } catch {}
+      }
+
+      let incident = null as any;
+      if (incidentId) {
+        try {
+          incident = await contract.getIncident(Number(incidentId));
+        } catch {}
+      }
+
       const incidentData = {
-        id: receipt.logs[0].args[0].toString(),
-        description: receipt.logs[0].args[1],
-        reportedBy: receipt.logs[0].args[2],
-        timestamp: new Date(Number(receipt.logs[0].args[3]) * 1000).toLocaleString(),
+        id: incidentId || 'N/A',
+        description: incident ? incident[1] : pdfCID,
+        reportedBy: incident ? incident[2] : walletAddress,
+        timestamp: incident ? new Date(Number(incident[3]) * 1000).toLocaleString() : new Date().toLocaleString(),
         txHash: tx.hash,
         blockNumber: receipt.blockNumber
       };
