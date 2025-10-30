@@ -137,7 +137,7 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
           {!walletConnected ? (
             <div>
               <p className="text-gray-600 mb-4">
-                Connect your MetaMask wallet to sign transactions and interact with the Celo blockchain.
+                Connect your wallet via WalletConnect to sign transactions and interact with the Celo blockchain.
               </p>
               <button
                 onClick={connectWallet}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Search, ArrowLeft, FileText, User, Clock, Hash, ExternalLink, AlertCircle, Loader, CheckCircle, XCircle } from 'lucide-react';
 import { ethers } from 'ethers';
+import { getBrowserProvider } from '../lib/wallet';
 import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, type IncidentData } from '../lib/contract';
 
 declare global {
@@ -25,17 +26,12 @@ export default function IncidentSearchPage({ onBack }: IncidentSearchPageProps) 
       return;
     }
 
-    if (!window.ethereum) {
-      setError('Please install MetaMask to search incidents');
-      return;
-    }
-
     setIsSearching(true);
     setError('');
     setIncidentData(null);
 
     try {
-      const browserProvider = new ethers.BrowserProvider(window.ethereum);
+      const browserProvider = await getBrowserProvider();
       const contract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, browserProvider);
       
       const data = await contract.getIncident(Number(incidentId));

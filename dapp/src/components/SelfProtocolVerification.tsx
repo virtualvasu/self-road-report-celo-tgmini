@@ -9,6 +9,7 @@ import {
   getUniversalLink,
 } from "@selfxyz/qrcode";
 import { ethers } from "ethers";
+import { getBrowserProvider } from "../lib/wallet";
 import { ArrowLeft, Shield, CheckCircle, AlertTriangle, Copy, ExternalLink, Loader2 } from 'lucide-react';
 
 // Type definitions for Self Protocol
@@ -152,54 +153,46 @@ export default function SelfProtocolVerification({
 
   // Function to switch to Celo Sepolia network
   const switchToCeloSepolia = async () => {
-    if (!window.ethereum) return;
-
     try {
-      // Try to switch to the network
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: `0x${CELO_SEPOLIA_CHAIN_ID.toString(16)}` }],
-      });
-    } catch (switchError: any) {
-      // If the network doesn't exist, add it
-      if (switchError.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [{
+      const provider = await getBrowserProvider();
+      try {
+        await provider.send('wallet_switchEthereumChain', [{ chainId: `0x${CELO_SEPOLIA_CHAIN_ID.toString(16)}` }]);
+      } catch (switchError: any) {
+        if (switchError?.code === 4902) {
+          try {
+            await provider.send('wallet_addEthereumChain', [{
               chainId: `0x${CELO_SEPOLIA_CHAIN_ID.toString(16)}`,
               chainName: 'Celo Sepolia Testnet',
-              nativeCurrency: {
-                name: 'CELO',
-                symbol: 'CELO',
-                decimals: 18,
-              },
+              nativeCurrency: { name: 'CELO', symbol: 'CELO', decimals: 18 },
               rpcUrls: [CELO_SEPOLIA_RPC_URL],
               blockExplorerUrls: ['https://celo-sepolia.blockscout.com/'],
-            }],
-          });
-        } catch (addError) {
-          console.error('Failed to add Celo Sepolia network:', addError);
-          displayToast('Failed to add Celo Sepolia network');
+            }]);
+          } catch (addError) {
+            console.error('Failed to add Celo Sepolia network:', addError);
+            displayToast('Failed to add Celo Sepolia network');
+          }
+        } else {
+          console.error('Failed to switch network:', switchError);
+          displayToast('Failed to switch to Celo Sepolia network');
         }
-      } else {
-        console.error('Failed to switch network:', switchError);
-        displayToast('Failed to switch to Celo Sepolia network');
       }
+    } catch (e) {
+      console.error('Provider not available for switching network', e);
+      displayToast('Connect wallet first to switch network');
     }
   };
 
   // Initialize ProofOfHuman contract
   useEffect(() => {
     const initializeContract = async () => {
-      if (!window.ethereum || !userAddress) {
+      if (!userAddress) {
         setCheckingContract(false);
         setIsLoading(false);
         return;
       }
 
       try {
-        const browserProvider = new ethers.BrowserProvider(window.ethereum);
+        const browserProvider = await getBrowserProvider();
         
         // Check if we're on the correct network (Celo Sepolia testnet)
         const network = await browserProvider.getNetwork();

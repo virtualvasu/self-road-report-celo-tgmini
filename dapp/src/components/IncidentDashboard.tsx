@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, ArrowLeft, FileText, User, Clock, Hash, ExternalLink, AlertCircle, Loader, CheckCircle, XCircle, RefreshCw, Eye } from 'lucide-react';
 import { ethers } from 'ethers';
+import { getBrowserProvider } from '../lib/wallet';
 import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, type IncidentData } from '../lib/contract';
 
 declare global {
@@ -28,17 +29,11 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
   }, []);
 
   const loadLatestIncidents = async () => {
-    if (!window.ethereum) {
-      setError('Please install MetaMask to view incidents');
-      setIsLoading(false);
-      return;
-    }
-
     try {
       setIsLoading(true);
       setError('');
       
-      const browserProvider = new ethers.BrowserProvider(window.ethereum);
+      const browserProvider = await getBrowserProvider();
       const contract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, browserProvider);
       
       // Get the last incident ID
@@ -85,16 +80,11 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
       return;
     }
 
-    if (!window.ethereum) {
-      setSearchError('Please install MetaMask to search incidents');
-      return;
-    }
-
     setIsSearching(true);
     setSearchError('');
 
     try {
-      const browserProvider = new ethers.BrowserProvider(window.ethereum);
+      const browserProvider = await getBrowserProvider();
       const contract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, browserProvider);
       
       const data = await contract.getIncident(Number(searchId));
