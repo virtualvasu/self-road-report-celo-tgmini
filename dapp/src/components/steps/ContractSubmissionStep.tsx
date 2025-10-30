@@ -22,39 +22,24 @@ export default function ContractSubmissionStep({ pdfCID, contract, walletAddress
   const handleSubmitToContract = async () => {
     setIsSubmitting(true);
     try {
-      const tx = await contract.reportIncident(pdfCID);
-      const receipt = await tx.wait();
-
-      // Robust confirmation: query contract state after mining instead of relying on logs parsing
-      let incidentId: string | undefined;
-      try {
-        const lastId = await contract.getLastIncidentId();
-        incidentId = lastId?.toString?.() || String(lastId);
-      } catch (e) {
-        // Fallback: try to derive from logs if available
-        try {
-          const firstLog: any = (receipt as any)?.logs?.[0];
-          const arg0 = firstLog?.args?.[0];
-          incidentId = arg0?.toString?.() || String(arg0);
-        } catch {}
+      const res = await fetch('/api/reportIncident', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pdfCID })
+      });
+      if (!res.ok) {
+        const t = await res.json().catch(() => ({}));
+        throw new Error(t?.error || 'Failed to submit');
       }
-
-      let incident = null as any;
-      if (incidentId) {
-        try {
-          incident = await contract.getIncident(Number(incidentId));
-        } catch {}
-      }
-
+      const data = await res.json();
       const incidentData = {
-        id: incidentId || 'N/A',
-        description: incident ? incident[1] : pdfCID,
-        reportedBy: incident ? incident[2] : walletAddress,
-        timestamp: incident ? new Date(Number(incident[3]) * 1000).toLocaleString() : new Date().toLocaleString(),
-        txHash: tx.hash,
-        blockNumber: receipt.blockNumber
+        id: data.incidentId || 'N/A',
+        description: pdfCID,
+        reportedBy: walletAddress,
+        timestamp: new Date().toLocaleString(),
+        txHash: data.txHash,
+        blockNumber: data.blockNumber
       };
-
       setContractData(incidentData);
       setSubmissionComplete(true);
     } catch (error: any) {
