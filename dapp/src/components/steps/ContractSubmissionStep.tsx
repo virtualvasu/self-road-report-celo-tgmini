@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle, Hash, Clock, User, FileText, Shield } from 'lucide-react';
 import { ethers } from 'ethers';
+import { getServerSigner, getReadOnlyProvider } from '../../lib/wallet';
+import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI } from '../../lib/contract';
 
 declare global {
   interface Window {
@@ -8,13 +10,13 @@ declare global {
   }
 }interface ContractSubmissionStepProps {
   pdfCID: string;
-  contract: ethers.Contract;
+  contract?: ethers.Contract;
   walletAddress: string;
   onNext: (contractData: any) => void;
   onBack: () => void;
 }
 
-export default function ContractSubmissionStep({ pdfCID, contract, walletAddress, onNext, onBack }: ContractSubmissionStepProps) {
+export default function ContractSubmissionStep({ pdfCID, walletAddress, onNext, onBack }: ContractSubmissionStepProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionComplete, setSubmissionComplete] = useState(false);
   const [contractData, setContractData] = useState<any>(null);
@@ -22,23 +24,31 @@ export default function ContractSubmissionStep({ pdfCID, contract, walletAddress
   const handleSubmitToContract = async () => {
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/reportIncident', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pdfCID })
-      });
-      if (!res.ok) {
-        const t = await res.json().catch(() => ({}));
-        throw new Error(t?.error || 'Failed to submit');
+      // Sign transaction using private key from env (client-side)
+      const signer = getServerSigner();
+      const contractWithSigner = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, signer);
+      
+      const tx = await contractWithSigner.reportIncident(pdfCID);
+      const receipt = await tx.wait();
+
+      // Get incident ID from contract
+      let incidentId: string | undefined;
+      try {
+        const readProvider = getReadOnlyProvider();
+        const readContract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, readProvider);
+        const lastId = await readContract.getLastIncidentId();
+        incidentId = lastId?.toString?.() || String(lastId);
+      } catch (e) {
+        console.warn('Could not fetch incident ID', e);
       }
-      const data = await res.json();
+
       const incidentData = {
-        id: data.incidentId || 'N/A',
+        id: incidentId || 'N/A',
         description: pdfCID,
         reportedBy: walletAddress,
         timestamp: new Date().toLocaleString(),
-        txHash: data.txHash,
-        blockNumber: data.blockNumber
+        txHash: tx.hash,
+        blockNumber: receipt.blockNumber
       };
       setContractData(incidentData);
       setSubmissionComplete(true);
@@ -76,7 +86,7 @@ export default function ContractSubmissionStep({ pdfCID, contract, walletAddress
           <div className="flex items-center justify-between">
             <span className="text-gray-500">Contract Address:</span>
             <code className="bg-white px-2 py-1 rounded border text-xs font-mono">
-              {String(contract.target)}
+              {INCIDENT_MANAGER_ADDRESS}
             </code>
           </div>
           <div className="flex items-center justify-between">

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronRight, CheckCircle, ArrowLeft } from 'lucide-react';
+import { ChevronRight, CheckCircle, ArrowLeft, Zap } from 'lucide-react';
 import { ethers } from 'ethers';
 import InitialSetupStep from './steps/InitialSetupStep';
 import SelfProtocolVerification from './SelfProtocolVerification';
@@ -10,6 +10,8 @@ import ContractSubmissionStep from './steps/ContractSubmissionStep';
 import SuccessSummaryStep from './steps/SuccessSummaryStep';
 import type { StorachaCredentials } from './StorachaConnection';
 import type { IncidentData } from '../lib/generateIncidentPDF';
+import { getServerSigner } from '../lib/wallet';
+// import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI } from '../lib/contract';
 
 export interface WizardData {
   walletAddress: string;
@@ -74,6 +76,46 @@ export default function IncidentWizard({ onBackToHome }: { onBackToHome?: () => 
       setCurrentStep(step);
     }
   };
+
+  // Development-only: Quick submit mock incident
+  const handleQuickMockSubmit = async () => {
+    if (!import.meta.env.DEV) return; // Only in development
+    
+    try {
+      // Get wallet address from server signer
+      const signer = getServerSigner();
+      const walletAddress = await signer.getAddress();
+      
+      // Create mock data
+      // const mockPdfCID = `https://w3s.link/ipfs/QmMockDev${Date.now()}`;
+      const mockIncidentData: IncidentData = {
+        location: '123 Test Street, Development City',
+        description: 'Mock incident for development testing',
+        isElderlyInvolved: 'no',
+        image: null
+      };
+
+      // Update wizard data
+      setWizardData({
+        walletAddress,
+        contract: null, // Not needed since we use getServerSigner
+        storachaCredentials: null,
+        isIdentityVerified: true, // Skip verification
+        incidentData: mockIncidentData,
+        pdfBytes: null,
+        storachaCID: `QmMockDev${Date.now()}`,
+        contractData: null
+      });
+
+      // Jump directly to contract submission step
+      setCurrentStep(6);
+    } catch (error: any) {
+      console.error('Quick mock submit error:', error);
+      alert('Failed to setup mock submit: ' + (error.message || 'Unknown error'));
+    }
+  };
+
+  const isDev = import.meta.env.DEV;
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -240,6 +282,28 @@ export default function IncidentWizard({ onBackToHome }: { onBackToHome?: () => 
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        {/* Development Only: Quick Mock Submit Button */}
+        {isDev && currentStep === 1 && (
+          <div className="mb-4 p-4 bg-amber-50 border-2 border-amber-300 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Zap className="w-5 h-5 text-amber-600" />
+                <div>
+                  <p className="font-semibold text-amber-900">Development Mode</p>
+                  <p className="text-sm text-amber-700">Skip all steps and submit a mock incident directly</p>
+                </div>
+              </div>
+              <button
+                onClick={handleQuickMockSubmit}
+                className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+              >
+                <Zap className="w-4 h-4" />
+                <span>Quick Mock Submit</span>
+              </button>
+            </div>
+          </div>
+        )}
+        
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           {renderStepContent()}
         </div>

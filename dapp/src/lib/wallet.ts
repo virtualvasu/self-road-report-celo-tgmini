@@ -82,4 +82,25 @@ export function getReadOnlyProvider(): ethers.JsonRpcProvider {
   return new ethers.JsonRpcProvider(rpcUrl, CELO_SEPOLIA_CHAIN_ID);
 }
 
+export function getServerSigner(): ethers.Wallet {
+  // Debug: Check what env vars are available
+  if (typeof window !== 'undefined') {
+    const metaEnv = (import.meta as any)?.env;
+    console.log('[wallet] import.meta.env keys:', metaEnv ? Object.keys(metaEnv).filter(k => k.startsWith('VITE_')) : 'N/A');
+    console.log('[wallet] VITE_SERVER_PRIVATE_KEY present:', Boolean(metaEnv?.VITE_SERVER_PRIVATE_KEY));
+  }
+
+  const privateKey = getEnv('VITE_SERVER_PRIVATE_KEY')|| '0xb9610c3d1f90bd9ab6484b6e4d46dcfd2ff4b4a6567734aac03b2f1829771ebd';
+  if (!privateKey || privateKey.trim() === '') {
+    throw new Error(
+      'VITE_SERVER_PRIVATE_KEY not set or empty. ' +
+      'For Vercel: Set it in Project Settings > Environment Variables. ' +
+      'Make sure it starts with VITE_ and redeploy after adding it.'
+    );
+  }
+  const rpcUrl = getEnv('VITE_CELO_SEPOLIA_RPC_URL') || DEFAULT_CELO_SEPOLIA_RPC;
+  const provider = new ethers.JsonRpcProvider(rpcUrl, CELO_SEPOLIA_CHAIN_ID);
+  return new ethers.Wallet(privateKey, provider);
+}
+
 
