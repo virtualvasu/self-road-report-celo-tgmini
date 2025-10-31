@@ -183,32 +183,32 @@ export default function IncidentFormStep({ data, onNext }: IncidentFormStepProps
   };
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       {/* Header */}
-      <div className="mb-8 text-center">
-        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <FileText className="w-8 h-8 text-blue-600" />
+      <div className="mb-6 text-center px-2">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+          <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Report Incident Details</h2>
-        <p className="text-gray-600">
+        <h2 className="text-lg sm:text-2xl font-bold text-gray-900 mb-1">Report Incident Details</h2>
+        <p className="text-gray-600 text-sm">
           Please provide accurate information about the incident to generate a comprehensive report
         </p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {/* Location Field */}
         <div className="space-y-2">
           <label className="flex items-center text-sm font-semibold text-gray-700 uppercase tracking-wide">
             <MapPin className="w-4 h-4 mr-2 text-gray-500" />
             Incident Location *
           </label>
-          <div className="flex space-x-2">
+          <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
             <input
               type="text"
               value={formData.location}
               onChange={(e) => handleInputChange('location', e.target.value)}
-              className={`flex-1 px-4 py-3 border-2 rounded-lg focus:ring-4 focus:ring-blue-100 transition-all duration-200 placeholder-gray-400 ${
+              className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 border-2 rounded-lg focus:ring-4 focus:ring-blue-100 transition-all duration-200 placeholder-gray-400 break-words whitespace-normal ${
                 errors.location 
                   ? 'border-red-300 focus:border-red-500' 
                   : 'border-gray-200 focus:border-blue-500'
@@ -227,7 +227,7 @@ export default function IncidentFormStep({ data, onNext }: IncidentFormStepProps
               title="Detect my current location"
             >
               <Navigation className={`w-4 h-4 ${isDetectingLocation ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">
+              <span className="text-sm">
                 {isDetectingLocation ? 'Detecting...' : 'Detect'}
               </span>
             </button>
@@ -253,7 +253,7 @@ export default function IncidentFormStep({ data, onNext }: IncidentFormStepProps
             value={formData.description}
             onChange={(e) => handleInputChange('description', e.target.value)}
             rows={4}
-            className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-4 focus:ring-blue-100 transition-all duration-200 placeholder-gray-400 resize-none ${
+                className={`w-full px-3 py-2 sm:px-4 sm:py-3 border-2 rounded-lg focus:ring-4 focus:ring-blue-100 transition-all duration-200 placeholder-gray-400 resize-none break-words whitespace-normal ${
               errors.description 
                 ? 'border-red-300 focus:border-red-500' 
                 : 'border-gray-200 focus:border-blue-500'
@@ -277,8 +277,8 @@ export default function IncidentFormStep({ data, onNext }: IncidentFormStepProps
             <Camera className="w-4 h-4 mr-2 text-gray-500" />
             Evidence Photo (Optional)
           </label>
-          <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-gray-400 transition-colors">
-            <input
+              <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 hover:border-gray-400 transition-colors">
+                <input
               type="file"
               accept="image/*"
               onChange={handleImageChange}
@@ -297,7 +297,7 @@ export default function IncidentFormStep({ data, onNext }: IncidentFormStepProps
                 </div>
               ) : (
                 <div>
-                  <Camera className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                      <Camera className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                   <p className="text-sm text-gray-600">
                     Click to upload or drag and drop
                   </p>
@@ -381,13 +381,13 @@ export default function IncidentFormStep({ data, onNext }: IncidentFormStepProps
         </div>
 
         {/* Submit Button */}
-        <div className="pt-6 border-t border-gray-200">
+        <div className="pt-4 border-t border-gray-200">
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-blue-300 flex items-center justify-center space-x-2"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 sm:py-4 sm:px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 focus:ring-4 focus:ring-blue-300 flex items-center justify-center space-x-2"
           >
             <span>Continue to PDF Generation</span>
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       </form>

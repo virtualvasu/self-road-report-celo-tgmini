@@ -210,7 +210,7 @@ export default function IncidentWizard({ onBackToHome }: { onBackToHome?: () => 
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 md:py-4">
           <div className="flex items-center justify-between">
             {onBackToHome && (
               <button
@@ -218,34 +218,34 @@ export default function IncidentWizard({ onBackToHome }: { onBackToHome?: () => 
                 className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
-                <span>Back to Home</span>
+                <span className="text-sm">Back</span>
               </button>
             )}
-            <div className="flex-1 text-center">
-              <h1 className="text-2xl font-bold text-gray-900">
+            <div className="flex-1 text-center px-2">
+              <h1 className="text-lg md:text-2xl font-bold text-gray-900 leading-tight">
                 Incident Management System
               </h1>
-              <p className="text-gray-600 text-sm mt-1">
+              <p className="text-gray-600 text-xs md:text-sm mt-1">
                 Professional incident reporting with blockchain verification
               </p>
             </div>
-            {onBackToHome && <div className="w-28"></div>} {/* Spacer for centering */}
+            {onBackToHome && <div className="w-16 md:w-28"></div>} {/* Spacer for centering */}
           </div>
         </div>
       </header>
 
-      {/* Progress Steps */}
+      {/* Progress Steps - horizontally scrollable on small screens */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-          <nav className="flex items-center justify-center">
-            <ol className="flex items-center space-x-4 md:space-x-8">
+        <div className="max-w-6xl mx-auto px-2 sm:px-6 py-4">
+          <nav>
+            <ol className="flex items-center gap-4 md:gap-8 overflow-x-auto no-scrollbar py-2 px-1">
               {STEPS.map((step, index) => (
-                <li key={step.id} className="flex items-center">
+                <li key={step.id} className="flex items-center flex-shrink-0">
                   <div className="flex flex-col items-center">
                     <button
                       onClick={() => goToStep(step.id)}
                       disabled={step.id > currentStep}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-colors duration-200 ${
+                      className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-colors duration-200 ${
                         currentStep > step.id
                           ? 'bg-green-600 text-white hover:bg-green-700'
                           : currentStep === step.id
@@ -254,24 +254,24 @@ export default function IncidentWizard({ onBackToHome }: { onBackToHome?: () => 
                       }`}
                     >
                       {currentStep > step.id ? (
-                        <CheckCircle className="w-5 h-5" />
+                        <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
                       ) : (
                         step.id
                       )}
                     </button>
-                    <div className="mt-2 text-center">
-                      <p className={`text-sm font-medium ${
+                    <div className="mt-1 text-center">
+                      <p className={`text-xs md:text-sm font-medium ${
                         currentStep >= step.id ? 'text-gray-900' : 'text-gray-500'
                       }`}>
                         {step.title}
                       </p>
-                      <p className="text-xs text-gray-500 hidden md:block">
+                      <p className="text-xxs text-gray-500 hidden md:block">
                         {step.description}
                       </p>
                     </div>
                   </div>
                   {index < STEPS.length - 1 && (
-                    <ChevronRight className="w-5 h-5 text-gray-400 ml-4 md:ml-8" />
+                    <ChevronRight className="w-4 h-4 text-gray-400 ml-3 md:ml-6 flex-shrink-0" />
                   )}
                 </li>
               ))}

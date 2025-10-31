@@ -64,20 +64,20 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
   const canContinue = walletConnected && isStorachaConnected && contract && storachaCredentials;
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       {/* Header */}
-      <div className="mb-8 text-center">
-        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Shield className="w-8 h-8 text-blue-600" />
+      <div className="mb-6 text-center px-2">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+          <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Setup Required Services</h2>
-        <p className="text-gray-600">
+        <h2 className="text-lg sm:text-2xl font-bold text-gray-900 mb-1">Setup Required Services</h2>
+        <p className="text-gray-600 text-sm">
           Connect your wallet and storage account to report incidents securely
         </p>
       </div>
 
       {/* Progress Overview */}
-      <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className={`p-4 rounded-lg border-2 transition-colors ${
           walletConnected 
             ? 'bg-green-50 border-green-200' 
@@ -120,12 +120,12 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
       </div>
 
       {/* Wallet Connection Section */}
-      <div className="mb-8">
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-4">
+      <div className="mb-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-3">
-              <Wallet className="w-6 h-6 text-blue-600" />
-              <h3 className="text-lg font-semibold text-gray-900">Connect Your Wallet</h3>
+              <Wallet className="w-5 h-5 text-blue-600" />
+              <h3 className="text-md sm:text-lg font-semibold text-gray-900">Connect Your Wallet</h3>
             </div>
             {walletConnected && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -136,13 +136,13 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
 
           {!walletConnected ? (
             <div>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 text-sm mb-3">
                 Connect your wallet via WalletConnect to sign transactions and interact with the Celo blockchain.
               </p>
               <button
                 onClick={connectWallet}
                 disabled={isConnectingWallet}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center space-x-2"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
               >
                 {isConnectingWallet ? (
                   <>
@@ -158,7 +158,7 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
               </button>
             </div>
           ) : (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
               <div className="flex items-center space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600" />
                 <div>
@@ -174,12 +174,12 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
       </div>
 
       {/* Storacha Connection Section */}
-      <div className="mb-8">
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-4">
+      <div className="mb-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-3">
-              <Cloud className="w-6 h-6 text-purple-600" />
-              <h3 className="text-lg font-semibold text-gray-900">Connect Storage Account</h3>
+              <Cloud className="w-5 h-5 text-purple-600" />
+              <h3 className="text-md sm:text-lg font-semibold text-gray-900">Connect Storage Account</h3>
             </div>
             {isStorachaConnected && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -188,8 +188,8 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
             )}
           </div>
 
-          <div className="space-y-4">
-            <p className="text-gray-600">
+          <div className="space-y-3">
+            <p className="text-gray-600 text-sm">
               Connect your Web3.Storage (Storacha) account to securely store incident reports on IPFS.
             </p>
             
@@ -220,18 +220,18 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-end pt-6 border-t border-gray-200">
+      <div className="flex justify-end pt-4 border-t border-gray-200">
         <button
           onClick={handleContinue}
           disabled={!canContinue}
-          className={`font-semibold py-3 px-6 rounded-lg shadow-sm transition-all duration-200 flex items-center space-x-2 ${
+          className={`w-full sm:w-auto font-semibold py-3 px-4 rounded-lg shadow-sm transition-all duration-200 flex items-center justify-center space-x-2 ${
             canContinue
               ? 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-md transform hover:-translate-y-0.5 focus:ring-4 focus:ring-blue-300'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
           <span>Continue to Incident Details</span>
-          <ArrowRight className="w-5 h-5" />
+          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
       </div>
 

@@ -138,79 +138,79 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="bg-white border-b border-gray-200 shadow-sm">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
             <div className="flex items-center justify-between">
               <button
                 onClick={handleBackToList}
                 className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
-                <span>Back to Dashboard</span>
+                <span className="text-sm">Back</span>
               </button>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-lg md:text-2xl font-bold text-gray-900">
                 Incident Details
               </h1>
-              <div className="w-32"></div> {/* Spacer for centering */}
+              <div className="w-20 md:w-32"></div> {/* Spacer for centering */}
             </div>
           </div>
         </header>
 
         {/* Incident Detail Content */}
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-            <div className="flex items-center mb-6">
-              <FileText className="w-6 h-6 text-green-600 mr-3" />
-              <h3 className="text-xl font-bold text-gray-900">Incident Details</h3>
-              <span className="ml-auto inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                <CheckCircle className="w-4 h-4 mr-1" />
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-8">
+            <div className="flex items-center mb-4 sm:mb-6">
+              <FileText className="w-5 h-5 text-green-600 mr-2" />
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900">Incident Details</h3>
+              <span className="ml-auto inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <CheckCircle className="w-3 h-3 mr-1" />
                 Found
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <Hash className="w-5 h-5 text-gray-500 mt-0.5" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 sm:mb-6">
+              <div className="space-y-3">
+                <div className="flex items-start space-x-2">
+                  <Hash className="w-4 h-4 text-gray-500 mt-0.5" />
                   <div>
-                    <span className="font-medium text-gray-700">Incident ID</span>
-                    <p className="text-2xl font-bold text-gray-900">#{selectedIncident.id}</p>
+                    <span className="font-medium text-gray-700 text-sm">Incident ID</span>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900">#{selectedIncident.id}</p>
                   </div>
                 </div>
                 
-                <div className="flex items-start space-x-3">
-                  <Clock className="w-5 h-5 text-gray-500 mt-0.5" />
+                <div className="flex items-start space-x-2">
+                  <Clock className="w-4 h-4 text-gray-500 mt-0.5" />
                   <div>
-                    <span className="font-medium text-gray-700">Reported On</span>
-                    <p className="text-gray-900">{selectedIncident.timestamp}</p>
+                    <span className="font-medium text-gray-700 text-sm">Reported On</span>
+                    <p className="text-gray-900 text-sm">{selectedIncident.timestamp}</p>
                   </div>
                 </div>
               </div>
               
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <User className="w-5 h-5 text-gray-500 mt-0.5" />
+              <div className="space-y-3">
+                <div className="flex items-start space-x-2">
+                  <User className="w-4 h-4 text-gray-500 mt-0.5" />
                   <div>
-                    <span className="font-medium text-gray-700">Reported By</span>
+                    <span className="font-medium text-gray-700 text-sm">Reported By</span>
                     <p className="text-gray-900 font-mono text-sm">
                       {selectedIncident.reportedBy.slice(0, 6)}...{selectedIncident.reportedBy.slice(-4)}
                     </p>
                   </div>
                 </div>
                 
-                <div className="flex items-start space-x-3">
-                  <FileText className="w-5 h-5 text-gray-500 mt-0.5" />
+                <div className="flex items-start space-x-2">
+                  <FileText className="w-4 h-4 text-gray-500 mt-0.5" />
                   <div>
-                    <span className="font-medium text-gray-700">Verification Status</span>
+                    <span className="font-medium text-gray-700 text-sm">Verification Status</span>
                     <div className="flex items-center space-x-2 mt-1">
                       {selectedIncident.verified ? (
                         <>
                           <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-green-600 font-semibold">Verified</span>
+                          <span className="text-green-600 font-semibold text-sm">Verified</span>
                         </>
                       ) : (
                         <>
                           <XCircle className="w-4 h-4 text-amber-600" />
-                          <span className="text-amber-600 font-semibold">Pending Verification</span>
+                          <span className="text-amber-600 font-semibold text-sm">Pending Verification</span>
                         </>
                       )}
                     </div>
@@ -220,23 +220,24 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
             </div>
 
             {/* IPFS Link */}
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-gray-200 pt-4 sm:pt-6">
               <div className="flex items-center justify-between mb-3">
-                <span className="font-medium text-gray-700">Stored Report (IPFS)</span>
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                <span className="font-medium text-gray-700 text-sm">Stored Report (IPFS)</span>
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
                   Decentralized
                 </span>
               </div>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="flex items-center justify-between">
-                  <code className="text-sm text-gray-900 break-all pr-4">
+              <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                  <code className="text-sm text-gray-900 break-words pr-0 sm:pr-4 w-full sm:flex-1">
                     {selectedIncident.ipfsUrl}
                   </code>
                   <a
                     href={selectedIncident.ipfsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors"
+                    aria-label="View report on IPFS"
+                    className="mt-3 sm:mt-0 w-full sm:w-auto flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center space-x-2 transition-colors"
                   >
                     <span>View Report</span>
                     <ExternalLink className="w-4 h-4" />
@@ -246,7 +247,7 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
             </div>
 
             {/* Additional Information */}
-            <div className={`mt-6 p-4 border rounded-lg ${
+            <div className={`mt-4 sm:mt-6 p-3 sm:p-4 border rounded-lg ${
               selectedIncident.verified 
                 ? 'bg-green-50 border-green-200' 
                 : 'bg-amber-50 border-amber-200'
@@ -266,12 +267,12 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
                     ? 'text-green-800' 
                     : 'text-amber-800'
                 }`}>
-                  <p className="font-medium">
+                  <p className="font-medium text-sm">
                     {selectedIncident.verified 
                       ? 'Verified Incident Report' 
                       : 'Pending Verification'}
                   </p>
-                  <p>
+                  <p className="text-sm">
                     {selectedIncident.verified 
                       ? 'This incident has been verified by the contract owner and permanently recorded on the blockchain with IPFS storage, ensuring its authenticity and immutability.'
                       : 'This incident has been recorded on the blockchain and stored on IPFS, but is awaiting verification by the contract owner.'}
@@ -314,11 +315,11 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
         {/* Search Section */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Search Specific Incident</h2>
-          <div className="flex space-x-3">
+          <div className="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0">
             <input
               type="number"
               value={searchId}
@@ -334,7 +335,7 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
             <button
               onClick={handleSearch}
               disabled={isSearching}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium px-6 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium px-4 py-2 rounded-lg flex items-center justify-center space-x-2 transition-colors"
             >
               {isSearching ? (
                 <Loader className="w-4 h-4 animate-spin" />
@@ -355,8 +356,8 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
         </div>
 
         {/* Latest Incidents Section */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="p-4 sm:p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Latest Incidents</h2>
               <span className="text-sm text-gray-500">
@@ -367,7 +368,7 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
 
           {/* Loading State */}
           {isLoading && (
-            <div className="p-12 text-center">
+            <div className="p-8 text-center">
               <Loader className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
               <p className="text-gray-600">Loading incidents...</p>
             </div>
@@ -375,7 +376,7 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
 
           {/* Error State */}
           {error && (
-            <div className="p-12 text-center">
+            <div className="p-6 text-center">
               <AlertCircle className="w-8 h-8 mx-auto mb-4 text-red-600" />
               <p className="text-red-800">{error}</p>
               <button
@@ -389,7 +390,7 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
 
           {/* No Incidents State */}
           {!isLoading && !error && incidents.length === 0 && (
-            <div className="p-12 text-center">
+            <div className="p-8 text-center">
               <FileText className="w-8 h-8 mx-auto mb-4 text-gray-400" />
               <p className="text-gray-600">No incidents reported yet</p>
             </div>
@@ -399,53 +400,53 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
           {!isLoading && !error && incidents.length > 0 && (
             <div className="divide-y divide-gray-200">
               {incidents.map((incident) => (
-                <div
-                  key={incident.id}
-                  onClick={() => handleIncidentClick(incident)}
-                  className="p-6 hover:bg-gray-50 cursor-pointer transition-colors"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <h3 className="text-lg font-medium text-gray-900">
-                          Incident #{incident.id}
-                        </h3>
-                        <div className="flex items-center space-x-1">
-                          {incident.verified ? (
-                            <>
-                              <CheckCircle className="w-4 h-4 text-green-600" />
-                              <span className="text-xs font-medium text-green-600">Verified</span>
-                            </>
-                          ) : (
-                            <>
-                              <XCircle className="w-4 h-4 text-amber-600" />
-                              <span className="text-xs font-medium text-amber-600">Pending</span>
-                            </>
-                          )}
+                  <div
+                    key={incident.id}
+                    onClick={() => handleIncidentClick(incident)}
+                    className="p-4 sm:p-6 hover:bg-gray-50 cursor-pointer transition-colors"
+                  >
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <h3 className="text-md sm:text-lg font-medium text-gray-900">
+                            Incident #{incident.id}
+                          </h3>
+                          <div className="flex items-center space-x-2">
+                            {incident.verified ? (
+                              <>
+                                <CheckCircle className="w-4 h-4 text-green-600" />
+                                <span className="text-xs font-medium text-green-600">Verified</span>
+                              </>
+                            ) : (
+                              <>
+                                <XCircle className="w-4 h-4 text-amber-600" />
+                                <span className="text-xs font-medium text-amber-600">Pending</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-gray-600">
+                          <div className="flex items-center space-x-2">
+                            <Clock className="w-4 h-4" />
+                            <span className="truncate">{incident.timestamp}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <User className="w-4 h-4" />
+                            <span className="font-mono truncate">
+                              {incident.reportedBy.slice(0, 6)}...{incident.reportedBy.slice(-4)}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-                        <div className="flex items-center space-x-2">
-                          <Clock className="w-4 h-4" />
-                          <span>{incident.timestamp}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <User className="w-4 h-4" />
-                          <span className="font-mono">
-                            {incident.reportedBy.slice(0, 6)}...{incident.reportedBy.slice(-4)}
-                          </span>
-                        </div>
+                      <div className="flex items-center space-x-2 mt-3 sm:mt-0 sm:ml-4">
+                        <button aria-label={`View details for incident ${incident.id}`} className="flex items-center space-x-1 text-blue-600 hover:text-blue-700 transition-colors">
+                          <Eye className="w-4 h-4" />
+                          <span className="text-sm hidden sm:inline">View Details</span>
+                        </button>
                       </div>
-                    </div>
-                    <div className="flex items-center space-x-2 ml-4">
-                      <button className="flex items-center space-x-1 text-blue-600 hover:text-blue-700 transition-colors">
-                        <Eye className="w-4 h-4" />
-                        <span className="text-sm">View Details</span>
-                      </button>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
         </div>
