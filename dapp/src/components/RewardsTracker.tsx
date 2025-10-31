@@ -50,7 +50,7 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
     setIsConnectingWallet(true);
     setError('');
     try {
-      const browserProvider = await getBrowserProvider();
+      const browserProvider = await getBrowserProvider(true); // Force new connection
       const accounts = await browserProvider.send("eth_requestAccounts", []);
       const signer = await browserProvider.getSigner();
       const contractInstance = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, signer);

@@ -15,7 +15,27 @@ function getEnv(name: string): string | undefined {
   return val === '' ? undefined : val;
 }
 
-export async function getBrowserProvider(): Promise<ethers.BrowserProvider> {
+// Clear any cached WalletConnect session
+export async function clearWalletConnectCache(): Promise<void> {
+  // Clear cached provider
+  if ((window as any).__wcBrowserProvider) {
+    (window as any).__wcBrowserProvider = undefined;
+  }
+  
+  // Clear WalletConnect storage/localStorage
+  try {
+    const keys = Object.keys(localStorage);
+    keys.forEach(key => {
+      if (key.startsWith('wc@') || key.includes('walletconnect')) {
+        localStorage.removeItem(key);
+      }
+    });
+  } catch (e) {
+    console.warn('[wallet] Could not clear localStorage', e);
+  }
+}
+
+export async function getBrowserProvider(forceNew = false): Promise<ethers.BrowserProvider> {
   // Force WalletConnect everywhere (desktop/mobile/Telegram)
   const projectId = getEnv('VITE_WALLETCONNECT_PROJECT_ID') || HARDCODED_WC_PROJECT_ID;
   const rpcUrl = getEnv('VITE_CELO_SEPOLIA_RPC_URL');
@@ -37,18 +57,51 @@ export async function getBrowserProvider(): Promise<ethers.BrowserProvider> {
     console.warn('[wallet] VITE_CELO_SEPOLIA_RPC_URL not set. Falling back to default Celo Sepolia RPC');
   }
 
-  // Use cached instance to avoid repeated sessions and relay issues
-  if ((window as any).__wcBrowserProvider) {
-    return (window as any).__wcBrowserProvider as ethers.BrowserProvider;
+  // Clear cache if forcing new connection
+  if (forceNew) {
+    await clearWalletConnectCache();
+  }
+
+  // Check for cached provider - but only if not forcing new connection
+  if (!forceNew && (window as any).__wcBrowserProvider) {
+    // Check if the provider still has an active session
+    try {
+      const cached = (window as any).__wcBrowserProvider;
+      const accounts = await cached.send('eth_accounts', []);
+      if (accounts && accounts.length > 0) {
+        // Session is still active, return cached
+        return cached;
+      }
+    } catch (e) {
+      // Session expired, clear cache and create new
+      console.log('[wallet] Cached session expired, creating new connection');
+      await clearWalletConnectCache();
+    }
   }
 
   const wcProvider = await EthereumProvider.init({
     projectId,
-    showQrModal: true,
+    showQrModal: true, // Always show QR modal for wallet selection
     chains: [CELO_SEPOLIA_CHAIN_ID],
     methods: ['eth_sendTransaction', 'personal_sign', 'eth_signTypedData', 'eth_signTransaction', 'eth_accounts', 'eth_requestAccounts'],
-    rpcMap: { [CELO_SEPOLIA_CHAIN_ID]: effectiveRpcUrl }
+    rpcMap: { [CELO_SEPOLIA_CHAIN_ID]: effectiveRpcUrl },
+    metadata: {
+      name: 'SafeRoads DAO',
+      description: 'Incident Reporting System',
+      url: window.location.origin,
+      icons: []
+    }
   });
+
+  // Check if already connected - if so, disconnect to force fresh connection
+  if (wcProvider.session) {
+    console.log('[wallet] Existing session found, disconnecting to force wallet selection');
+    try {
+      await wcProvider.disconnect();
+    } catch (e) {
+      console.warn('[wallet] Error disconnecting existing session', e);
+    }
+  }
 
   await wcProvider.enable();
   const browserProvider = new ethers.BrowserProvider(wcProvider as unknown as any);
@@ -65,12 +118,12 @@ export async function getBrowserProvider(): Promise<ethers.BrowserProvider> {
   return browserProvider;
 }
 
-export async function connectWalletAndGetContract(address: string, abi: any): Promise<{
+export async function connectWalletAndGetContract(address: string, abi: any, forceNewConnection = true): Promise<{
   walletAddress: string;
   contract: ethers.Contract;
   provider: ethers.BrowserProvider;
 }> {
-  const provider = await getBrowserProvider();
+  const provider = await getBrowserProvider(forceNewConnection);
   const accounts = await provider.send('eth_requestAccounts', []);
   const signer = await provider.getSigner();
   const contract = new ethers.Contract(address, abi, signer);

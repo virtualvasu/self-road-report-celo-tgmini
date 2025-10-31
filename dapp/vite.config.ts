@@ -11,5 +11,15 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:8787'
     }
+  },
+  build: {
+    // Ensure cache busting with hash in filenames
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name]-[hash].js`,
+        chunkFileNames: `assets/[name]-[hash].js`,
+        assetFileNames: `assets/[name]-[hash].[ext]`
+      }
+    }
   }
 })
