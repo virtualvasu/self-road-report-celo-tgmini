@@ -27,7 +27,7 @@ export default function SuccessSummaryStep({ wizardData, onRestart, onBackToHome
   };
 
   return (
-    <div className="p-8">
+    <div className="mobile-wrapper p-6">
       {/* Success Header */}
       <div className="text-center mb-8">
         <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">

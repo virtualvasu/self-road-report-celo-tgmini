@@ -440,7 +440,7 @@ export default function SelfProtocolVerification({
   // Show network switch prompt if on wrong network
   if (wrongNetwork) {
     return (
-      <div className="p-8">
+      <div className="mobile-wrapper p-6">
         <div className="text-center">
           <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertTriangle className="w-8 h-8 text-orange-600" />
@@ -487,7 +487,7 @@ export default function SelfProtocolVerification({
   // Show loading state while checking contract
   if (checkingContract) {
     return (
-      <div className="p-8">
+      <div className="mobile-wrapper p-6">
         <div className="text-center">
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
@@ -504,7 +504,7 @@ export default function SelfProtocolVerification({
   // Show success state for verified users (either pre-verified or just verified)
   if (isVerified) {
     return (
-      <div className="p-8">
+      <div className="mobile-wrapper p-6">
         <div className="text-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle className="w-8 h-8 text-green-600" />
@@ -539,7 +539,7 @@ export default function SelfProtocolVerification({
   // Show QR code verification flow
   if (!showQRCode) {
     return (
-      <div className="p-8">
+      <div className="mobile-wrapper p-6">
         <div className="text-center">
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
@@ -554,7 +554,7 @@ export default function SelfProtocolVerification({
   }
 
   return (
-    <div className="p-8">
+    <div className="mobile-wrapper p-6">
       {/* Header */}
       <div className="mb-8 text-center">
         <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">

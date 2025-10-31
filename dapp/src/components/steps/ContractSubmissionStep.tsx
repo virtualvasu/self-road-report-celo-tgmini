@@ -67,7 +67,7 @@ export default function ContractSubmissionStep({ pdfCID, walletAddress, onNext, 
   };
 
   return (
-    <div className="p-4 sm:p-8">
+    <div className="mobile-wrapper p-4 sm:p-6">
       {/* Header */}
       <div className="mb-6 text-center px-2">
         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -80,7 +80,7 @@ export default function ContractSubmissionStep({ pdfCID, walletAddress, onNext, 
       </div>
 
       {/* Contract Information */}
-      <div className="bg-gray-50 rounded-lg p-4 sm:p-6 mb-6">
+  <div className="bg-gray-50 rounded-lg p-4 mb-6">
         <h3 className="font-semibold text-gray-900 mb-4">Smart Contract Details</h3>
         <div className="space-y-3 text-sm">
           <div className="flex items-center justify-between">
@@ -91,7 +91,7 @@ export default function ContractSubmissionStep({ pdfCID, walletAddress, onNext, 
           </div>
           <div className="flex items-center justify-between">
             <span className="text-gray-500">IPFS URL:</span>
-            <code className="bg-white px-2 py-1 rounded border text-xs font-mono break-words w-48 sm:w-72">
+            <code className="bg-white px-2 py-1 rounded border text-xs font-mono break-words w-full sm:w-72">
               {pdfCID}
             </code>
           </div>
@@ -119,7 +119,7 @@ export default function ContractSubmissionStep({ pdfCID, walletAddress, onNext, 
             <button
               onClick={handleSubmitToContract}
               disabled={isSubmitting}
-              className="w-full sm:w-auto bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 sm:py-4 sm:px-8 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-red-300 flex items-center justify-center space-x-2 mx-auto"
+              className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-red-300 flex items-center justify-center space-x-2 mx-auto"
             >
               {isSubmitting ? (
                 <>
@@ -207,11 +207,11 @@ export default function ContractSubmissionStep({ pdfCID, walletAddress, onNext, 
       )}
 
       {/* Navigation */}
-      <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 pt-4 sm:pt-6 border-t border-gray-200">
+      <div className="flex flex-col sm:flex-row justify-between gap-3 pt-4 sm:pt-6 border-t border-gray-200">
         <button
           onClick={onBack}
           disabled={isSubmitting}
-          className="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
+          className="w-full bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
         >
           <ArrowLeft className="w-5 h-5" />
           <span>Back</span>

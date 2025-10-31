@@ -9,7 +9,7 @@ export default function ProjectIntroPage({ onContinue }: ProjectIntroPageProps) 
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="container mx-auto px-4 py-4 border-b border-gray-200">
+      <header className="mobile-wrapper border-b border-gray-200 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
@@ -21,7 +21,7 @@ export default function ProjectIntroPage({ onContinue }: ProjectIntroPageProps) 
             href="https://github.com/virtualvasu/self-road-report-celo"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 hover:border-emerald-600 rounded-lg transition-all text-gray-700 hover:text-emerald-600"
+            className="flex items-center gap-2 px-3 py-2 border border-gray-300 hover:border-emerald-600 rounded-lg transition-all text-gray-700 hover:text-emerald-600"
           >
             <Github className="w-5 h-5" />
             <span className="hidden sm:inline">GitHub</span>
@@ -30,25 +30,25 @@ export default function ProjectIntroPage({ onContinue }: ProjectIntroPageProps) 
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12 text-center">
-        <div className="max-w-4xl mx-auto">
-          <div className="inline-block mb-4 px-4 py-1 bg-emerald-50 rounded-full border border-emerald-200">
+      <section className="mobile-wrapper py-8 text-center">
+        <div className="max-w-xl mx-auto">
+          <div className="inline-block mb-4 px-3 py-1 bg-emerald-50 rounded-full border border-emerald-200">
             <span className="text-emerald-700 text-sm font-medium">Built on Celo Blockchain</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
             Report Road Incidents.
             <br />
             <span className="text-emerald-600">Earn Rewards.</span>
           </h1>
           
-          <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+          <p className="text-base text-gray-600 mb-6 max-w-md mx-auto">
             A decentralized platform that rewards citizens for reporting real road incidents — potholes, accidents, and hazards — with blockchain-verified transparency.
           </p>
 
           <button
             onClick={onContinue}
-            className="group px-8 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-semibold text-white shadow-lg shadow-emerald-600/30 transition-all flex items-center gap-2 mx-auto"
+            className="group px-6 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-semibold text-white shadow-lg shadow-emerald-600/30 transition-all flex items-center gap-2 mx-auto"
           >
             Get Started
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

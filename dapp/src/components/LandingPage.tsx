@@ -11,7 +11,7 @@ export default function LandingPage({ onReportIncident, onViewDashboard, onViewR
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 md:py-6">
+  <div className="mobile-wrapper py-4 md:py-6">
           <div className="text-center">
             <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
               <Shield className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
@@ -33,7 +33,7 @@ export default function LandingPage({ onReportIncident, onViewDashboard, onViewR
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 md:py-16">
+  <main className="mobile-wrapper py-10 md:py-16">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-lg md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
             What would you like to do?
@@ -44,7 +44,7 @@ export default function LandingPage({ onReportIncident, onViewDashboard, onViewR
         </div>
 
         {/* Action Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {/* Report New Incident */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-shadow">
             <div className="text-center">
@@ -175,7 +175,7 @@ export default function LandingPage({ onReportIncident, onViewDashboard, onViewR
 
       {/* Footer */}
       <footer className="py-6 text-center text-gray-500 text-sm bg-white border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+  <div className="mobile-wrapper">
           <div className="flex flex-col items-center space-y-2">
             <div>© 2025 Incident Management System - Secure • Decentralized • Professional</div>
             <div className="flex items-center space-x-2">

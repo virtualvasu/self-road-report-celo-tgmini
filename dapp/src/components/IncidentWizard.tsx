@@ -210,7 +210,7 @@ export default function IncidentWizard({ onBackToHome }: { onBackToHome?: () => 
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 md:py-4">
+  <div className="mobile-wrapper py-3 md:py-4">
           <div className="flex items-center justify-between">
             {onBackToHome && (
               <button
@@ -236,7 +236,7 @@ export default function IncidentWizard({ onBackToHome }: { onBackToHome?: () => 
 
       {/* Progress Steps - horizontally scrollable on small screens */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-2 sm:px-6 py-4">
+  <div className="mobile-wrapper py-4">
           <nav>
             <ol className="flex items-center gap-4 md:gap-8 overflow-x-auto no-scrollbar py-2 px-1">
               {STEPS.map((step, index) => (
@@ -281,7 +281,7 @@ export default function IncidentWizard({ onBackToHome }: { onBackToHome?: () => 
       </div>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+  <main className="mobile-wrapper py-8">
         {/* Development Only: Quick Mock Submit Button */}
         {isDev && currentStep === 1 && (
           <div className="mb-4 p-4 bg-amber-50 border-2 border-amber-300 rounded-lg">
@@ -311,7 +311,7 @@ export default function IncidentWizard({ onBackToHome }: { onBackToHome?: () => 
 
       {/* Footer */}
       <footer className="mt-12 py-6 text-center text-gray-500 text-sm bg-white border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="mobile-wrapper">
           © 2025 Incident Management System - Secure • Decentralized • Professional
         </div>
       </footer>

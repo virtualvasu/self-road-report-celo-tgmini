@@ -138,7 +138,7 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="bg-white border-b border-gray-200 shadow-sm">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
+    <div className="mobile-wrapper py-3">
             <div className="flex items-center justify-between">
               <button
                 onClick={handleBackToList}
@@ -156,7 +156,7 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
         </header>
 
         {/* Incident Detail Content */}
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+  <main className="mobile-wrapper py-8">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-8">
             <div className="flex items-center mb-4 sm:mb-6">
               <FileText className="w-5 h-5 text-green-600 mr-2" />
@@ -291,7 +291,7 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+  <div className="mobile-wrapper py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={onBack}
@@ -315,7 +315,7 @@ export default function IncidentDashboard({ onBack }: IncidentDashboardProps) {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+  <main className="mobile-wrapper py-6">
         {/* Search Section */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Search Specific Incident</h2>

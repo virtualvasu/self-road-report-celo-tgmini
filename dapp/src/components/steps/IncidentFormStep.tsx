@@ -183,9 +183,9 @@ export default function IncidentFormStep({ data, onNext }: IncidentFormStepProps
   };
 
   return (
-    <div className="p-4 sm:p-8">
+    <div className="mobile-wrapper p-4 sm:p-6">
       {/* Header */}
-      <div className="mb-6 text-center px-2">
+  <div className="mb-6 text-center px-2">
         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
           <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
         </div>

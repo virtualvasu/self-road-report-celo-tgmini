@@ -61,7 +61,7 @@ export default function StorageUploadStep({ pdfBytes, storachaCredentials, onNex
   };
 
   return (
-    <div className="p-8">
+    <div className="mobile-wrapper p-6">
       {/* Header */}
       <div className="mb-8 text-center">
         <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -140,10 +140,10 @@ export default function StorageUploadStep({ pdfBytes, storachaCredentials, onNex
             {/* Upload Button */}
             <div className="text-center">
               <button
-                onClick={handleUpload}
-                disabled={isUploading}
-                className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold py-4 px-8 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-purple-300 flex items-center justify-center space-x-2 mx-auto"
-              >
+                  onClick={handleUpload}
+                  disabled={isUploading}
+                  className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold py-4 px-6 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-purple-300 flex items-center justify-center space-x-2 mx-auto"
+                >
                 {isUploading ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -219,11 +219,11 @@ export default function StorageUploadStep({ pdfBytes, storachaCredentials, onNex
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between pt-6 border-t border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-between pt-6 border-t border-gray-200 gap-3">
         <button
           onClick={onBack}
           disabled={isUploading}
-          className="bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors flex items-center space-x-2"
+          className="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors flex items-center space-x-2"
         >
           <ArrowLeft className="w-5 h-5" />
           <span>Back</span>
@@ -232,7 +232,7 @@ export default function StorageUploadStep({ pdfBytes, storachaCredentials, onNex
         {uploadComplete && (
           <button
             onClick={handleContinue}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-blue-300 flex items-center space-x-2"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-blue-300 flex items-center space-x-2"
           >
             <span>Continue to Contract Submission</span>
             <ArrowRight className="w-5 h-5" />

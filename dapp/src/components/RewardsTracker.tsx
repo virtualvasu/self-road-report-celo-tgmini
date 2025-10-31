@@ -166,7 +166,7 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+        <div className="mobile-wrapper py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={onBack}
@@ -190,7 +190,7 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+  <main className="mobile-wrapper py-8">
         {/* Wallet Connection */}
         {!walletConnected ? (
           <div className="max-w-md mx-auto">
@@ -212,11 +212,11 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
                 </div>
               )}
 
-              <button
-                onClick={connectWallet}
-                disabled={isConnectingWallet}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
-              >
+                <button
+                  onClick={connectWallet}
+                  disabled={isConnectingWallet}
+                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                >
                 {isConnectingWallet ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

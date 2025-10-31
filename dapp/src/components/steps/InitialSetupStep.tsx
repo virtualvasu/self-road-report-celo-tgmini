@@ -64,7 +64,7 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
   const canContinue = walletConnected && isStorachaConnected && contract && storachaCredentials;
 
   return (
-    <div className="p-4 sm:p-8">
+    <div className="mobile-wrapper p-4 sm:p-8">
       {/* Header */}
       <div className="mb-6 text-center px-2">
         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -220,7 +220,7 @@ export default function InitialSetupStep({ onNext }: InitialSetupStepProps) {
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-end pt-4 border-t border-gray-200">
+      <div className="flex flex-col sm:flex-row justify-end items-center gap-3 pt-4 border-t border-gray-200">
         <button
           onClick={handleContinue}
           disabled={!canContinue}

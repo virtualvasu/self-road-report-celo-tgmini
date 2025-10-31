@@ -78,7 +78,7 @@ export default function IncidentSearchPage({ onBack }: IncidentSearchPageProps) 
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+  <div className="mobile-wrapper py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={onBack}
@@ -96,9 +96,9 @@ export default function IncidentSearchPage({ onBack }: IncidentSearchPageProps) 
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
-        {/* Search Section */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
+  <main className="mobile-wrapper py-12">
+  {/* Search Section */}
+  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Search className="w-8 h-8 text-blue-600" />
@@ -114,7 +114,7 @@ export default function IncidentSearchPage({ onBack }: IncidentSearchPageProps) 
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Incident ID
             </label>
-            <div className="flex space-x-3">
+            <div className="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0">
               <input
                 type="number"
                 value={incidentId}
@@ -127,7 +127,7 @@ export default function IncidentSearchPage({ onBack }: IncidentSearchPageProps) 
               <button
                 onClick={handleSearch}
                 disabled={isSearching}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 focus:ring-4 focus:ring-blue-300 flex items-center space-x-2"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 focus:ring-4 focus:ring-blue-300 flex items-center space-x-2"
               >
                 {isSearching ? (
                   <Loader className="w-5 h-5 animate-spin" />
@@ -169,7 +169,7 @@ export default function IncidentSearchPage({ onBack }: IncidentSearchPageProps) 
 
         {/* Results Section */}
         {incidentData && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center mb-6">
               <FileText className="w-6 h-6 text-green-600 mr-3" />
               <h3 className="text-xl font-bold text-gray-900">Incident Details</h3>

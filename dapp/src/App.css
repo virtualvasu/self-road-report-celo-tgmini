@@ -1,11 +1,31 @@
 
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Make the app mobile-first by default. Use the .mobile-wrapper class to
+   provide a consistent narrow container for screens up to ~640px. */
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+#root {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* Reusable mobile-first container used across components. Keeps content
+   comfortably constrained for phone screens while still allowing Tailwind's
+   responsive utilities to expand on larger viewports. */
+.mobile-wrapper {
+  max-width: 640px; /* ~small phone / narrow tablet */
+  margin: 0 auto;
+  padding: 0.75rem; /* 12px */
+}
+
+/* Utility to hide native scrollbars for the horizontal step nav used in the wizard */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 .logo {
   height: 6em;

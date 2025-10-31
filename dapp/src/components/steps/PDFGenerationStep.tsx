@@ -51,7 +51,7 @@ export default function PDFGenerationStep({ incidentData, onNext, onBack }: PDFG
   };
 
   return (
-    <div className="p-8">
+    <div className="mobile-wrapper p-4 sm:p-8">
       {/* Header */}
       <div className="mb-8 text-center">
         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -100,7 +100,7 @@ export default function PDFGenerationStep({ incidentData, onNext, onBack }: PDFG
           <button
             onClick={handleGeneratePDF}
             disabled={isGenerating}
-            className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-4 px-8 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-green-300 flex items-center justify-center space-x-2 mx-auto"
+            className="w-full sm:w-auto bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-4 px-8 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-green-300 flex items-center justify-center space-x-2"
           >
             {isGenerating ? (
               <>
@@ -171,10 +171,10 @@ export default function PDFGenerationStep({ incidentData, onNext, onBack }: PDFG
       )}
 
       {/* Navigation */}
-      <div className="flex justify-between pt-6 border-t border-gray-200">
+      <div className="flex flex-col sm:flex-row justify-between pt-6 border-t border-gray-200 gap-3 sm:gap-0">
         <button
           onClick={onBack}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors flex items-center space-x-2"
+          className="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
         >
           <ArrowLeft className="w-5 h-5" />
           <span>Back</span>
@@ -183,7 +183,7 @@ export default function PDFGenerationStep({ incidentData, onNext, onBack }: PDFG
         {pdfBytes && (
           <button
             onClick={handleContinue}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-blue-300 flex items-center space-x-2"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-blue-300 flex items-center justify-center space-x-2"
           >
             <span>Continue to Storage Upload</span>
             <ArrowRight className="w-5 h-5" />
